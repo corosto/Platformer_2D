@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class PlayerLife : MonoBehaviour
 {
@@ -47,8 +48,9 @@ public class PlayerLife : MonoBehaviour
 
     private void Hurt()
     {
-        soundHit.Play();
         canBeDamaged = false;
+        Task.Delay(1500).ContinueWith((task) => { canBeDamaged = true; });
+        soundHit.Play();
         playerAnimator.SetTrigger("hit");
         playerBody.AddForce(new Vector2(0, 16), ForceMode2D.Impulse);
     }
@@ -56,9 +58,5 @@ public class PlayerLife : MonoBehaviour
     private void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    private void ToggleInvincibility() {
-        canBeDamaged = !canBeDamaged;
     }
 }
