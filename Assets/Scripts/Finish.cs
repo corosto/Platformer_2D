@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class Finish : MonoBehaviour
 {
     [SerializeField] private AudioSource soundFinish;
+    [SerializeField] Animator transitionAnim;
     private bool finished = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,6 +20,13 @@ public class Finish : MonoBehaviour
 
     private void CompleteLevel()
     {
+        StartCoroutine(LoadLevel());
+    }
+
+    IEnumerator LoadLevel() {
+        transitionAnim.SetTrigger("End");
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        transitionAnim.SetTrigger("Start");
     }
 }
